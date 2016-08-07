@@ -608,15 +608,45 @@ class FindTransitAccessibleTrailheads:
             print "Stops layer extent (upper):", stop_pt_WM
             print self.plugin_dir
             sys.argv = [GTFSDir, stopList]
-            f_stop_times = os.path.join(GTFSDir, "stop_times.txt")
+            missing_files = []
+            all_files_present = True
+            fn_stop_times = "stop_times.txt"
+            f_stop_times = os.path.join(GTFSDir, fn_stop_times)
+            if not os.path.exists(f_stop_times):
+            	all_files_present = False   
+            	missing_files.append(fn_stop_times)   
+            fn_stops = "stops.txt"
+            f_stops = os.path.join(GTFSDir, fn_stops)
+            if not os.path.exists(f_stops):
+            	all_files_present = False   
+            	missing_files.append(fn_stops)   
+            fn_trips = "trips.txt"
+            f_trips = os.path.join(GTFSDir, fn_trips)
+            if not os.path.exists(f_trips):
+            	all_files_present = False   
+            	missing_files.append(fn_trips)   
+            fn_routes = "routes.txt"
+            f_routes = os.path.join(GTFSDir, fn_routes)
+            if not os.path.exists(f_routes):
+            	all_files_present = False   
+            	missing_files.append(fn_routes)   
+            fn_agency = "agency.txt"
+            f_agency = os.path.join(GTFSDir, fn_agency)
+            if not os.path.exists(f_agency):
+            	all_files_present = False   
+            	missing_files.append(fn_agency)   
             #if working_dir doesn't exist, create it
-            if os.path.exists(f_stop_times):
+            ###if os.path.exists(f_stop_times):			
+            if all_files_present:
             	print "starting service analysis...this might take some time"   
             	SummarizeTransitService = os.path.join(self.plugin_dir, "SummarizeTransitService.py")
             	execfile(SummarizeTransitService)
             else:
-            	print "The GTFS appears to be incomplete.  Check that all parts are present and try again."   				
-			##create empty dictionary
+            	print "The GTFS appears to be incomplete.  The following files seem to be missing."   				
+            	#print "The GTFS appears to be incomplete.  Check that all parts are present and try again."   				
+            	for f in missing_files:
+            	    print f
+				##create empty dictionary
             ##  BEGIN DISTANCE CODE!
             distance_dictionary = {}
             ### (temporarily) set ref to TAT in case
